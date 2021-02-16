@@ -1,17 +1,25 @@
-# This is a sample Python script.
+import pymysql
+import subprocess
+from subprocess import Popen, PIPE, STDOUT
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+conn = pymysql.connect(host='127.0.0.1', user='root', passwd='1234', db='db1')
+cur = conn.cursor()
 
+print("Attempting to create new database...")
+try:
+    cur.execute("CREATE DATABASE Project_Test2")
+    print("Creating new database")
+except Exception:
+    print("Database already exists")
+print()
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+# close connection just to be sure
+cur.close()
+conn.close()
 
+print("Trying to copy old database to new database...")
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+subprocess.Popen('mysqldump -h localhost -P 3306 -u -root --column-statistics=0 db1 | mysql -h localhost -P 3306 -u root Project_Test3' , shell=True)
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
-print("oskar")
+print("output:")
+print(output)
